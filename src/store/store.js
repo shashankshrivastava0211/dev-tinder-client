@@ -14,7 +14,6 @@ const store = configureStore({
   preloadedState: persistedState, // Use the persisted state
 });
 
-// Save state to localStorage whenever the store changes
 store.subscribe(() => {
   saveState({
     addUserSlice: store.getState().addUserSlice, // Persist only the required slice of state

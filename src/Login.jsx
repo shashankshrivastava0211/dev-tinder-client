@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
@@ -12,10 +11,27 @@ const Login = () => {
   const [emailId, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const disptach = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const validateInputs = () => {
+    if (!emailId) {
+      setError("Email ID is required.");
+      return false;
+    }
+    if (!password) {
+      setError("Password is required.");
+      return false;
+    }
+    setError(""); // Clear previous error
+    return true;
+  };
+
   const loginFunction = async () => {
+    if (!validateInputs()) {
+      return; // Stop execution if validation fails
+    }
+
     try {
       const res = await axios.post(
         "http://localhost:7777/login",
@@ -28,18 +44,18 @@ const Login = () => {
         }
       );
 
-      disptach(addUser(res.data));
+      // Handle success
+      dispatch(addUser(res.data));
       navigate("/feed");
       toast.success("Login successful!");
-
-      if (res.status == 400) {
-        console.log("Invalid credentials");
-      }
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message);
 
-      setError(error.response.data.message);
+      // Extract error message and handle undefined cases
+      const errorMessage =
+        error.response?.data || "An unexpected error occurred.";
+      setError(errorMessage);
+      toast.error(errorMessage);
     }
   };
 
@@ -51,7 +67,7 @@ const Login = () => {
           <div>
             <label className="form-control w-full max-w-xs">
               <div className="label">
-                <span className="label-text">Email ID:{emailId}</span>
+                <span className="label-text">Email ID</span>
               </div>
               <input
                 type="text"
@@ -60,20 +76,18 @@ const Login = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="input input-bordered w-full max-w-xs"
               />
-              <div className="label"></div>
             </label>
             <label className="form-control w-full max-w-xs">
               <div className="label">
                 <span className="label-text">Password</span>
               </div>
               <input
-                type="text"
+                type="password"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="input input-bordered w-full max-w-xs"
               />
-              <div className="label"></div>
             </label>
           </div>
 
@@ -82,7 +96,7 @@ const Login = () => {
               Login
             </button>
           </div>
-          {error && <div className="text-red-500">{error}</div>}
+          {error && <div className="text-red-500 mt-2">{error}</div>}
         </div>
       </div>
       <ToastContainer />
