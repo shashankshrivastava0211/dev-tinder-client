@@ -1,4 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import styles
 import "./App.css";
 
 import Body from "./Body";
@@ -7,6 +9,7 @@ import Profile from "./Profile";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import Feed from "./Feed";
+import Connections from "./Connections";
 
 function App() {
   return (
@@ -16,12 +19,15 @@ function App() {
           <Routes>
             <Route path="/" element={<Body />}>
               <Route path="/login" element={<Login />} />
+
               <Route path="/profile" element={<Profile />} />
+              <Route path="/Connections" element={<Connections />} />
+
               <Route path="/feed" element={<Feed />} />
-              <Route path="/" element={<Login />} />
             </Route>
           </Routes>
         </BrowserRouter>
+        <ToastContainer position="top-center" autoClose={3000} />
       </Provider>
     </>
   );

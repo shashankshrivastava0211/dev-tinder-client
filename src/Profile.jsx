@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { addUser } from "./store/addUserSlice";
+import { toast } from "react-hot-toast";
 
 const Profile = () => {
   const user = useSelector((state) => state.addUserSlice); // Initial user state from Redux
@@ -27,6 +28,7 @@ const Profile = () => {
     // Check if the form has been modified
     if (!isFormChanged()) {
       console.log("No changes detected, API call skipped.");
+      toast("No changes to update.", { icon: "ℹ️" });
       return;
     }
 
@@ -46,8 +48,10 @@ const Profile = () => {
       );
       console.log(res.data?.user);
       dispatch(addUser(res.data?.user)); // Update Redux store
+      toast.success("Profile updated successfully.");
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      toast.error("Failed to update profile. Please try again.");
     }
   };
 
