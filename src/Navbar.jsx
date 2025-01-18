@@ -62,6 +62,9 @@ const Navbar = () => {
             <li>
               <a>Settings</a>
             </li>
+            <li onClick={() => navigate("/connectionsRequests")}>
+              <a>Connections Requests</a>
+            </li>
             <li onClick={() => navigate("/Connections")}>
               <a>Connections</a>
             </li>

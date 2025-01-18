@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import Feed from "./Feed";
 import Connections from "./Connections";
+import ConnectionRequest from "./ConnectionRequest";
 
 function App() {
   return (
@@ -22,6 +23,10 @@ function App() {
 
               <Route path="/profile" element={<Profile />} />
               <Route path="/Connections" element={<Connections />} />
+              <Route
+                path="/connectionsRequests"
+                element={<ConnectionRequest />}
+              />
 
               <Route path="/feed" element={<Feed />} />
             </Route>
